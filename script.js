@@ -35,6 +35,32 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
+// Page Navigation
+// document.querySelectorAll('.nav__link').forEach(nav => {
+//   nav.addEventListener('click', e => {
+//     // console.log('link', e.target);
+//     e.preventDefault();
+//     const id = e.target.getAttribute('href');
+//     // console.log(id);
+//     const navElement = document.querySelector(id);
+//     navElement.scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+// USING EVENT DELEGATION
+document.querySelector('.nav__links').addEventListener('click', e => {
+  e.preventDefault();
+  if (
+    e.target.classList.contains('nav__link') &&
+    !e.target.classList.contains('nav__link--btn')
+  ) {
+    // console.log(e.target);
+    const id = e.target.getAttribute('href');
+    const navElement = document.querySelector(id);
+    navElement.scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
 // CREATING ELEMENTS
 const message = document.createElement('div');
 message.classList.add('cookie-message');
@@ -62,7 +88,7 @@ document.querySelector('.btn--close-cookie').addEventListener('click', () => {
 // console.log(section1);
 
 btnScrollTo.addEventListener('click', e => {
-  const s1coords = section1.getBoundingClientRect();
+  // const s1coords = section1.getBoundingClientRect();
   // console.log(s1coords);
   // window.scrollTo({
   //   left: s1coords.left + window.scrollX,
@@ -73,3 +99,25 @@ btnScrollTo.addEventListener('click', e => {
   // New Way Of Implementing scrollTo
   section1.scrollIntoView({ behavior: 'smooth' });
 });
+
+// RANDOM COLORS
+const randomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min + 1) + min);
+
+const randomColor = () =>
+  `rgb(${randomInt(0, 255)}, ${randomInt(0, 255)}, ${randomInt(0, 255)})`;
+
+// console.log(randomColor());
+// document.querySelector('.nav__link').addEventListener('click', function (e) {
+//   e.preventDefault();
+//   e.target.style.backgroundColor = randomColor();
+// });
+// document.querySelector('.nav__links').addEventListener('click', function (e) {
+//   e.preventDefault();
+//   e.target.style.backgroundColor = randomColor();
+// });
+
+// document.querySelector('.nav').addEventListener('click', function (e) {
+//   e.preventDefault();
+//   e.target.style.backgroundColor = randomColor();
+// });
