@@ -121,3 +121,27 @@ const randomColor = () =>
 //   e.preventDefault();
 //   e.target.style.backgroundColor = randomColor();
 // });
+
+// TABS COMPONENT
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabsContainer.addEventListener('click', e => {
+  const clicked = e.target.closest('.operations__tab'); // Finds the closest tab instead of selecting even the span
+  if (!clicked) return; // Guard clause
+
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+  // console.log(clicked);
+
+  // Removing the active class for content
+  tabsContent.forEach(tab => {
+    tab.classList.remove('operations__content--active');
+  });
+
+  // Activate the current tab information
+  document
+    .querySelector(`.operations__content--${clicked.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
