@@ -10,6 +10,12 @@ const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const header = document.querySelector('.header');
+// Menu fade animation
+const nav = document.querySelector('.nav');
+// TABS COMPONENT
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
 
 const openModal = function (e) {
   e.preventDefault();
@@ -122,11 +128,6 @@ const randomColor = () =>
 //   e.target.style.backgroundColor = randomColor();
 // });
 
-// TABS COMPONENT
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabsContent = document.querySelectorAll('.operations__content');
-
 tabsContainer.addEventListener('click', e => {
   const clicked = e.target.closest('.operations__tab'); // Finds the closest tab instead of selecting even the span
   if (!clicked) return; // Guard clause
@@ -145,3 +146,69 @@ tabsContainer.addEventListener('click', e => {
     .querySelector(`.operations__content--${clicked.dataset.tab}`)
     .classList.add('operations__content--active');
 });
+
+// MENU fade animation
+const handleHover = (e, opacity) => {
+  if (e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+    // console.log(link);
+    // console.log(siblings);
+    // console.log(logo);
+    // console.log)
+    siblings.forEach(sb => {
+      if (sb !== link) sb.style.opacity = opacity;
+    });
+    logo.style.opacity = opacity;
+  }
+};
+
+nav.addEventListener('mouseover', e => handleHover(e, 0.5));
+
+nav.addEventListener('mouseout', e => handleHover(e, 1));
+
+// Scrolling old school
+// const initialCoords = section1.getBoundingClientRect();
+// window.addEventListener('scroll', e => {
+//   // console.log(window.scrollY);
+//   if (window.scrollY > initialCoords.top) nav.classList.add('sticky');
+//   else nav.classList.remove('sticky');
+// });
+
+// USING THE INTERSECTION OBSERVER API
+// const obsCallback = (entries, observer) => {
+//   // console.log('INTERSECTION', entries);
+//   entries.forEach(entry => {
+//     console.log(entry);
+//   });
+// };
+
+// const obsOptions = {
+//   root: null,
+//   threshold: [0, 0.2],
+// };
+
+// const observer = new IntersectionObserver(obsCallback, obsOptions);
+// observer.observe(section1);
+
+const navHeight = nav.getBoundingClientRect().height;
+const stickyNav = (entries, observer) => {
+  const [entry] = entries;
+  console.log(entry);
+  if (!entry.isIntersecting) nav.classList.add('sticky');
+  else nav.classList.remove('sticky');
+
+  // entries.forEach(entry => {
+  //   console.log(entry);
+  // });
+};
+
+const stickyNavOps = {
+  root: null,
+  rootMargin: `-${navHeight}px`,
+  threshold: 0,
+};
+
+const observer = new IntersectionObserver(stickyNav, stickyNavOps);
+observer.observe(header);
