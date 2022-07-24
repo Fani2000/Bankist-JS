@@ -195,13 +195,9 @@ nav.addEventListener('mouseout', e => handleHover(e, 1));
 const navHeight = nav.getBoundingClientRect().height;
 const stickyNav = (entries, observer) => {
   const [entry] = entries;
-  console.log(entry);
+  // console.log(entry);
   if (!entry.isIntersecting) nav.classList.add('sticky');
   else nav.classList.remove('sticky');
-
-  // entries.forEach(entry => {
-  //   console.log(entry);
-  // });
 };
 
 const stickyNavOps = {
@@ -212,3 +208,30 @@ const stickyNavOps = {
 
 const observer = new IntersectionObserver(stickyNav, stickyNavOps);
 observer.observe(header);
+
+// Reveling sections and adding the animation for each section
+const allSections = document.querySelectorAll('.section');
+
+const revealSection = (entries, observer) => {
+  const [entry] = entries;
+  console.log(entry);
+
+  if (!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target);
+};
+
+const revealSectionOpts = {
+  root: null,
+  threshold: 0.15,
+};
+
+const sectionObserver = new IntersectionObserver(
+  revealSection,
+  revealSectionOpts
+);
+
+allSections.forEach(section => {
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
+});
